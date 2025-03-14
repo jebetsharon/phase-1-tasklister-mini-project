@@ -1,34 +1,49 @@
-// Select the form and the task list
-const form = document.getElementById("create-task-form");
-const taskList = document.getElementById("tasks");
+document.addEventListener("DOMContentLoaded", () => {
 
-// Function to handle the form submission
-function handleTaskFormSubmit(event) {
-  event.preventDefault(); // Prevent the default form submission (page reload)
-  
-  // Get the value from the input field
-  const taskDescription = document.getElementById("new-task-description").value;
+  //   // your code here
 
-  // Only add the task if the input field is not empty
-  if (taskDescription.trim() !== "") {
-    createTask(taskDescription); // Function to create and append the task to the DOM
-  }
+  const inputField = document.getElementById("new-task-description");
+  const formElement = document.querySelector("form");
+  formElement.addEventListener('submit', (e) => {
+  let newtask =inputField.value
 
-  // Clear the input field after submission
-  document.getElementById("new-task-description").value = "";
+    e.preventDefault();
+    if (newtask.length===0){
+    alert('Task cannot be empty')
+    }else{
+      handleToDo(newtask);
+    }
+    formElement.reset()
+  });
+});
+
+
+function css(element, style) {
+  for (const property in style)
+      element.style[property] = style[property];
 }
 
-// Function to create and add a task to the list
-function createTask(taskDescription) {
-  // Create the new task element
-  const newTask = document.createElement("li");
+function handleToDo (newtask) {
+  let listItem = document.createElement("li");
+  let btn = document.createElement('button')
+ 
+  css(btn, {
+    'background-color': 'yellow',
+    'color': 'red',
+     'background' :'red',
+  'color' :'#ffffff',
+  'padding' : '6px',
+'margin' : '4px',
+'font-size' :'12px',
+});
 
-  // Set the text of the task to the input description
-  newTask.textContent = taskDescription;
-
-  // Append the task to the task list
-  taskList.appendChild(newTask);
+  btn.addEventListener('click',handleDelete)
+  btn.textContent='X Remove'
+  listItem.innerText = `${newtask}`;
+  listItem.appendChild(btn)
+  document.querySelector("#tasks").appendChild(listItem);
 }
 
-// Attach event listener to the form
-form.addEventListener("submit", handleTaskFormSubmit);
+function handleDelete(e){
+e.target.parentNode.remove()
+}

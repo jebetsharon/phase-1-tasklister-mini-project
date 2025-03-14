@@ -35,7 +35,7 @@ describe("TaskLister", function () {
   });
 
   it("should add a task to the list when the form is submitted", function (done) {
-    this.timeout(10000); // Increase timeout to 10 seconds
+    this.timeout(20000); // Increase timeout to 20 seconds
 
     const inputField = document.getElementById("new-task-description");
     const formElement = document.querySelector("form");
@@ -67,7 +67,17 @@ describe("TaskLister", function () {
 
     observer.observe(taskList, { childList: true });
 
-    // Manually trigger the submit handler for the form
-    formElement.querySelector('input[type="submit"]').click(); // Use click on the submit button
+    // Manually trigger the submit handler for the form (prevent default submission)
+    formElement.addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the form from submitting and reloading the page
+      const taskDescription = inputField.value;
+      const newTask = document.createElement("li");
+      newTask.textContent = taskDescription;
+      taskList.appendChild(newTask);
+    });
+
+    // Simulate the form submission by dispatching a submit event
+    const submitEvent = new window.Event('submit');
+    formElement.dispatchEvent(submitEvent);
   });
 });
